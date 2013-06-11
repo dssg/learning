@@ -48,14 +48,17 @@ Scales better than weka
 If loading in big amount of data, don't use default loading techniques... slow, will crash, etc.
 
 Not so good at:
-	- graphical models
-	- natural language processing (have to pre-process outside)
-	- ...however, has a pipeline that you can plug-in at any point
+
+- graphical models
+- natural language processing (have to pre-process outside)
+- ...however, has a pipeline that you can plug-in at any point
 
 Many of these algorithms are computer memory bound; need all data in memory. Some ways around this:
-	- Use a database, use an algorithm that works out of a database
-	- Map-reduce, distributed approach
+
+- Use a database, use an algorithm that works out of a database
+- Map-reduce, distributed approach
 
 MultiCore
-	- Python runs in one process so will only use 1 core, by default
-	- If you use GridSearch, it will run across multiple processes, so can work on several cores.
+
+- Python runs in one process so will only use 1 core, by default
+- If you use GridSearch, it will run across multiple processes, so can work on several cores.
