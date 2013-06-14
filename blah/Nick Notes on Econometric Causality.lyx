@@ -1,0 +1,1177 @@
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass beamer
+\begin_preamble
+\usetheme{Warsaw}
+% or ...
+
+\setbeamercovered{transparent}
+% or whatever (possibly just delete it)
+\end_preamble
+\use_default_options false
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman times
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_amsmath 2
+\use_esint 0
+\use_mhchem 1
+\use_mathdots 1
+\cite_engine basic
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 2
+\tocdepth 2
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+A Taste of Problems and Fixes in Program Evaluation
+\begin_inset Argument
+status open
+
+\begin_layout Plain Layout
+Probs & Fixes in Prog Eval
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Plain Layout
+optional, use only with long paper titles
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subtitle
+Causality Worries for Economists
+\end_layout
+
+\begin_layout Author
+Nick Mader
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Itemize
+Give the names in the same order as the appear in the paper.
+ 
+\end_layout
+
+\begin_layout Itemize
+Use the 
+\begin_inset Quotes eld
+\end_inset
+
+Institute mark
+\begin_inset Quotes erd
+\end_inset
+
+ inset (
+\family sans
+Insert\SpecialChar \menuseparator
+Custom Insets\SpecialChar \menuseparator
+InstituteMark
+\family default
+) only if the authors have different affiliations.
+\end_layout
+
+\end_inset
+
+
+\begin_inset Argument
+status open
+
+\begin_layout Plain Layout
+Nick Mader
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Plain Layout
+- optional, use only with lots of authors
+\end_layout
+
+\begin_layout Plain Layout
+- if there are really lots of authors, use 
+\begin_inset Quotes eld
+\end_inset
+
+Author et al.
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Date
+Data Science for Social Good Summer Fellowship, 2013
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Itemize
+Either use conference name or its abbreviation.
+ 
+\end_layout
+
+\begin_layout Itemize
+Not really informative to the audience, more for people (including yourself)
+ who are reading the slides online
+\end_layout
+
+\end_inset
+
+
+\begin_inset Argument
+status open
+
+\begin_layout Plain Layout
+DSSG 2013
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Plain Layout
+optional, should be abbreviation of conference name
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+The following causes the table of contents to be shown at the beginning
+ of every subsection.
+ Delete this, if you do not want it.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+AtBeginSubsection[]{
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\backslash
+frame<beamer>{ 
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\backslash
+frametitle{Outline}   
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\backslash
+tableofcontents[currentsection,currentsubsection] 
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+  }
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+If you wish to uncover everything in a step-wise fashion, uncomment the
+ following command:
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+beamerdefaultoverlayspecification{<+->}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout BeginFrame
+Outline
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset toc
+LatexCommand tableofcontents
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Plain Layout
+Structuring a talk is a difficult task and the following structure may not
+ be suitable.
+ Here are some rules that apply for this solution: 
+\end_layout
+
+\begin_layout Itemize
+Exactly two or three sections (other than the summary).
+ 
+\end_layout
+
+\begin_layout Itemize
+At *most* three subsections per section.
+ 
+\end_layout
+
+\begin_layout Itemize
+Talk about 30s to 2min per frame.
+ So there should be between about 15 and 30 frames, all told.
+\end_layout
+
+\begin_layout Itemize
+A conference audience is likely to know very little of what you are going
+ to talk about.
+ So *simplify*! 
+\end_layout
+
+\begin_layout Itemize
+In a 20min talk, getting the main ideas across is hard enough.
+ Leave out details, even if it means being less precise than you think necessary.
+ 
+\end_layout
+
+\begin_layout Itemize
+If you omit details that are vital to the proof/implementation, just say
+ so once.
+ Everybody will be happy with that.
+ 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Preliminaries
+\end_layout
+
+\begin_layout BeginPlainFrame
+An economist, why?
+\end_layout
+
+\begin_layout Itemize
+An economist?
+\end_layout
+
+\begin_layout Itemize
+Leading projects on education and motherhood?
+\end_layout
+
+\begin_layout Itemize
+Don't you have something better to do?
+\end_layout
+
+\begin_layout Itemize
+Like ruin an economy with flawed models of the macroeconomy?
+\end_layout
+
+\begin_layout EndFrame
+
+\end_layout
+
+\begin_layout BeginPlainFrame
+An economist, why?
+\end_layout
+
+\begin_layout Itemize
+I'm a microeconomist.
+ We deal with data and empirics.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Unlike macroeconomists
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+I don't deal with money
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Turns out that the human beings economists have been studying 
+\emph on
+are the same ones
+\emph default
+ 
+\emph on
+that sociologists and psychologists have been studying!
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Economists still differ from sociologists and statisticians are distinguished
+ by our toolkit
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Many important questions do not come/can't be put in an experimental framework
+\end_layout
+
+\begin_layout Itemize
+Econometrics as a field developed to deal with inability to experiment
+\end_layout
+
+\end_deeper
+\begin_layout EndFrame
+
+\end_layout
+
+\begin_layout Section
+Problems
+\end_layout
+
+\begin_layout BeginPlainFrame
+Improving public policy
+\end_layout
+
+\begin_layout Itemize
+There are phenomena that we care about, and want to improve -- crime, poverty,
+ poor educational attainment
+\end_layout
+
+\begin_layout Itemize
+Question is: what's effective in changing them?
+\end_layout
+
+\begin_layout Itemize
+Causes are complex, and the data only partially reflects all the things
+ that matter
+\end_layout
+
+\begin_layout EndFrame
+
+\end_layout
+
+\begin_layout BeginPlainFrame
+Some things that we do
+\end_layout
+
+\begin_layout Itemize
+Plot variables, run correlations, calculate conditional averages
+\end_layout
+
+\begin_layout Itemize
+Bivariate comparisons are interesting, but correlation 
+\begin_inset Formula $\neq$
+\end_inset
+
+ causation
+\end_layout
+
+\begin_layout Itemize
+Graduation rates differ by race.
+ If minority kids...
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+...go to bad schools, reform the schools;
+\end_layout
+
+\begin_layout Itemize
+...have unstable families, support them;
+\end_layout
+
+\begin_layout Itemize
+...are bad at school, forget about them.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Can only close the door on incorrect hypotheses when we have data
+\end_layout
+
+\begin_layout Itemize
+Big danger when we're missing important data, and don't sweat over what
+ that is.
+\end_layout
+
+\begin_layout EndFrame
+
+\end_layout
+
+\begin_layout BeginPlainFrame
+A cautionary tale from the NLSY79
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Block
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+<1->
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Untitled block.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Shown on all slides.
+\end_layout
+
+\end_deeper
+\begin_layout ExampleBlock
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+<2->
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\end_inset
+
+Some Example Block Title
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $e^{i\pi}=-1$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $e^{i\pi/2}=i$
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Let's look at descriptives
+\end_layout
+
+\begin_layout Itemize
+Let's add explanatory variables
+\end_layout
+
+\begin_layout Itemize
+Is everything in the data set? Are we happy with our conclusions?
+\end_layout
+
+\begin_layout EndFrame
+
+\end_layout
+
+\begin_layout Section
+Math on Problems
+\end_layout
+
+\begin_layout BeginPlainFrame
+Bias due to unobserved factors
+\end_layout
+
+\begin_layout Itemize
+Suppose that the truth is:
+\end_layout
+
+\begin_layout Standard
+
+\begin_inset Formula 
+\[
+y_{i}=\beta^{\prime}x_{i}+\alpha d_{i}+\epsilon_{i}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Where:
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $y_{i}$
+\end_inset
+
+ is the outcome that we're interested in (for simplicity, a continuous variable)
+, observed for individuals 
+\begin_inset Formula $i=1,...,N$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $x_{i}$
+\end_inset
+
+ is a vector of information about individuals - gender, race, neighborhood,
+ prior school attendance patterns
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $d_{i}$
+\end_inset
+
+ is a binary variable reflecting whether 
+\begin_inset Formula $i$
+\end_inset
+
+ received some treatment (
+\begin_inset Formula $d_{i}=1$
+\end_inset
+
+) or not (
+\begin_inset Formula $d_{i}=0$
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\epsilon_{i}$
+\end_inset
+
+ is everything else not in our data that influences 
+\begin_inset Formula $y_{i}$
+\end_inset
+
+ - e.g.
+ motivation, family stability, socio-emotional stability, high quality relations
+hips, positive outlook
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\alpha$
+\end_inset
+
+ and 
+\begin_inset Formula $\beta$
+\end_inset
+
+ are parameters that measure the rates at which 
+\begin_inset Formula $d_{i}$
+\end_inset
+
+ and 
+\begin_inset Formula $x_{i}$
+\end_inset
+
+ transfer into 
+\begin_inset Formula $y_{i}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout EndFrame
+
+\end_layout
+
+\begin_layout BeginPlainFrame
+Bias due to unobserved factors
+\end_layout
+
+\begin_layout Itemize
+Resources: 
+\begin_inset Formula $\left\{ x_{i},d_{i},y_{i}\right\} _{i=1}^{N}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Interests: 
+\begin_inset Formula $\left\{ \alpha,\beta\right\} $
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+We've got a linear setup--how about a linear projection of 
+\begin_inset Formula $y_{i}$
+\end_inset
+
+ on the space defined by 
+\begin_inset Formula $\left(x_{i,}d_{i}\right)$
+\end_inset
+
+ to recover the slope parameters?
+\begin_inset Formula 
+\[
+\mathbf{E}\left[\left.y_{i}\right|x_{i},d_{i}\right]=\beta^{\prime}x_{i}+\alpha d_{i}+\mathbf{E\left[\left.\epsilon_{i}\right|x_{i},d_{i}\right]}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Oops.
+ 
+\begin_inset Formula $\epsilon_{i}$
+\end_inset
+
+ isn't orthogonal to 
+\begin_inset Formula $x_{i}$
+\end_inset
+
+ and 
+\begin_inset Formula $d_{i}$
+\end_inset
+
+.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+That sounds technical.
+ Is a problem?
+\end_layout
+
+\end_deeper
+\begin_layout EndFrame
+
+\end_layout
+
+\begin_layout BeginPlainFrame
+Bias due to unobserved factors
+\end_layout
+
+\begin_layout Itemize
+There's a theoretical relationship between what we don't observe and what
+ we do:
+\begin_inset Formula 
+\[
+\mathbf{\epsilon_{i}}=\pi_{x}^{\prime}x_{i}+\pi_{d}d_{i}+\eta_{i}
+\]
+
+\end_inset
+
+where 
+\begin_inset Formula $\pi$
+\end_inset
+
+ are projection parameters, and 
+\begin_inset Formula $\eta_{i}$
+\end_inset
+
+ represents unobserved factors that truly are orthogonal to 
+\begin_inset Formula $\left(x_{i},d_{i}\right)$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\pi\neq0$
+\end_inset
+
+ means that there's some relationship between what we don't observe and
+ what we do observe
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Unobserved neighborhood processes will hang with indicators of neighborhood
+ of residence
+\end_layout
+
+\begin_layout Itemize
+Delinquency and disengagement will hang with (low) attendance
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\pi_{d}<0$
+\end_inset
+
+ means that program participation is associated with negative unobservables
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Very likely when treatment targets at-risk populations
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout EndFrame
+
+\end_layout
+
+\begin_layout BeginPlainFrame
+Bias due to unobserved factors
+\end_layout
+
+\begin_layout Itemize
+Linear regression gets us clumps of parameters:
+\begin_inset Formula 
+\[
+y_{i}=\left(\beta+\pi_{x}\right)^{\prime}x_{i}+\left(\alpha+\pi_{d}\right)d_{i}+\eta_{i}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+We're no longer in the world of 
+\emph on
+ceteris paribus
+\end_layout
+
+\begin_layout Itemize
+When we vary 
+\begin_inset Formula $d_{i}$
+\end_inset
+
+, we switch on other stuff
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+An effective program (
+\begin_inset Formula $\alpha>0$
+\end_inset
+
+) ...
+\end_layout
+
+\begin_layout Itemize
+...that targets kids who are at-risk in ways we can't account for (
+\begin_inset Formula $\pi_{d}<0$
+\end_inset
+
+) ...
+\end_layout
+
+\begin_layout Itemize
+may look ineffective (if 
+\begin_inset Formula $\alpha+\pi_{d}\leq0$
+\end_inset
+
+)
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+We have data, ran stats that other people can't do.
+ We're very smart.
+ Shouldn't we close programs that look ineffective?
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Good lord.
+\end_layout
+
+\begin_layout Itemize
+Loaded question.
+\end_layout
+
+\end_deeper
+\begin_layout EndFrame
+
+\end_layout
+
+\begin_layout Section
+Some Fixes
+\end_layout
+
+\begin_layout BeginPlainFrame
+Strategies for Fixes
+\end_layout
+
+\begin_layout Itemize
+We need to return to a 
+\emph on
+ceteris paribus
+\emph default
+ world
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Instrumental Variables
+\series default
+ methods remove the portion of 
+\begin_inset Formula $d_{i}$
+\end_inset
+
+ that is associated with unobserved factors
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Instead, rely only on what known (i.e., 
+\emph on
+are
+\emph default
+ in the data), unproblematic factors explain program participation
+\end_layout
+
+\begin_layout Itemize
+Regress 
+\begin_inset Formula $y_{i}$
+\end_inset
+
+ on 
+\begin_inset Formula $x_{i}$
+\end_inset
+
+ and 
+\begin_inset Formula $\mathbf{E}\left[\left.d_{i}\right|x_{i},z_{i}\right]$
+\end_inset
+
+ where 
+\begin_inset Formula $z_{i}$
+\end_inset
+
+ are 
+\begin_inset Quotes eld
+\end_inset
+
+unproblematic
+\begin_inset Quotes erd
+\end_inset
+
+ variables that explain participation in treatment (the 
+\begin_inset Quotes eld
+\end_inset
+
+instrumental variables
+\begin_inset Quotes erd
+\end_inset
+
+) 
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+
+\series bold
+Control Function
+\series default
+ methods directly account for unobserved factors whose presence we can infer
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Regress 
+\begin_inset Formula $y_{i}$
+\end_inset
+
+on 
+\begin_inset Formula $x_{i}$
+\end_inset
+
+, 
+\begin_inset Formula $d_{i}$
+\end_inset
+
+ and 
+\begin_inset Formula $\mathbf{E}\left[\left.\epsilon_{i}\right|x_{i},d_{i},z_{i}\right]$
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+A variety of implementations will yield more and less flexible (and complex)
+ results.
+\end_layout
+
+\begin_layout EndFrame
+
+\end_layout
+
+\begin_layout BeginPlainFrame
+Complications that we can add
+\end_layout
+
+\begin_layout Itemize
+Vector-valued treatment -- there are a lot of programs out there
+\end_layout
+
+\begin_layout Itemize
+Non-continuous outcomes
+\end_layout
+
+\begin_layout EndFrame
+
+\end_layout
+
+\begin_layout Section
+Summary
+\end_layout
+
+\begin_layout BeginPlainFrame
+Summary
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Planning
+\series default
+: Think about what you have--versus what you 
+\emph on
+need to have
+\emph default
+--measured
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Use partners to get perspective on what you need
+\end_layout
+
+\begin_layout Itemize
+Worry a lot about what you don't have
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+
+\series bold
+Implementing
+\series default
+: Respect and manage high stakes
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+In academia, high stakes are getting lit up in seminar
+\end_layout
+
+\begin_layout Itemize
+In program evaluation, high stakes are killing a good program
+\end_layout
+
+\begin_layout Itemize
+Communicate caveats
+\end_layout
+
+\begin_layout Itemize
+But: being smart using data is constructive.
+ Carefully add to the mix.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+
+\series bold
+Iterating Solutions
+\series default
+: Your computer is not your only tool
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Missing data? Go and get it.
+\end_layout
+
+\end_deeper
+\begin_layout EndFrame
+
+\end_layout
+
+\end_body
+\end_document
