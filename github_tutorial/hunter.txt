@@ -1,2 +1,7 @@
+<<<<<<< HEAD
 blah
+=======
+
+This was an edit made by hunter
+>>>>>>> 4eee39aae8241482e0ecfc05d4def3144a037d67
 edited!
