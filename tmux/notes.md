@@ -57,7 +57,11 @@ The -t flag is the target session you want to attach to.
 ps ax | grep '[n]ew-session -s'
 ```
 
-And the cool thing is that anyone who can connect to the box can also attach to the session, see what's happening, and even control the input.  Let's try that...
+And the cool thing is that anyone who can connect to the box can also attach to the session, see what's happening, and even control the input, but first you have to make it public by giving everyone read/write access to the socket.
+
+```
+chmod go+rw /tmp/mdagost
+```
 
 ##Panes
 
