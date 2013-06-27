@@ -5,7 +5,11 @@
 These notes are based off of tmux version 1.8, so you'll need to upgrade from the default tmux on ubuntu.
 
 ssh dssg@ec2-54-225-49-43.compute-1.amazonaws.com
+
 ilovedata
+
+##Why tmux?
+Working on remote servers can suck.  What if you want to leave something running overnight but go home?  Do you hate having tons of open windows all connected to the same server?  Are you working with someone else on the same project (maybe pair programming) and you want to both be able to see the screen and type at the same time?
 
 ##Let’s start a tmux session
 
@@ -13,13 +17,13 @@ ilovedata
 tmux -S /tmp/mdagost new-session -s mdagost
 ```
 
-The -S flag tells us which "socket" file to write screen information too.  Not important to understand what that means, just remember the file.  The -s flag gives our new session a name.  You can leave off new-session, and you can leave off the -s, which names the session, but they’re recommended.
+The -S flag tells us which "socket" file to write screen information too.  Not important to understand what that means, just remember the file.  The -s flag gives our new session a name.  You can leave off new-session, and you can leave off the -s, but they’re recommended.
+
+You can see the socket file that is storing the screen information:
 
 ```
 ls /tmp/mdagost
 ```
-
-You can see the socket file that is storing the screen information.
 
 ##All tmux commands start with a "leader"
 
@@ -37,7 +41,7 @@ Now let's do something...
 ctrl-a d
 ```
 
-##..and then re-attach
+##...and then re-attach
 ```
 tmux -S /tmp/mdagost attach -t mdagost
 ```
@@ -48,6 +52,8 @@ The -t flag is the target session you want to attach to.
 ```
 ps ax | grep '[n]ew-session -s'
 ```
+
+##And the cool thing is that anyone who can connect to the box can also attach to the session, see what's happening, and even control the input.  Let's try that...
 
 ##Panes
 
@@ -91,8 +97,9 @@ ctrl-a ? List all keybindings
 ```
 
 ##Scrolling up
+```
 ctrl-a [ to scroll up and then escape
-
+```
 
 
  
