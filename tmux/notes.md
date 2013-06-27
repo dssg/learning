@@ -35,6 +35,10 @@ set -g prefix ^a
 
 Now let's do something...
 
+```
+for f in {1..100}; do echo $f; sleep 1; done
+```
+
 ##We can detach from our session...
 
 ```
@@ -53,7 +57,7 @@ The -t flag is the target session you want to attach to.
 ps ax | grep '[n]ew-session -s'
 ```
 
-##And the cool thing is that anyone who can connect to the box can also attach to the session, see what's happening, and even control the input.  Let's try that...
+And the cool thing is that anyone who can connect to the box can also attach to the session, see what's happening, and even control the input.  Let's try that...
 
 ##Panes
 
