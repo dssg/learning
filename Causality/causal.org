@@ -1,0 +1,332 @@
+#+TITLE: Demonstration Of Instrumental Variables And Control Function Methods
+#+AUTHOR: Nick Mader\\ \texttt{Chapin Hall, University of Chicago} \and Evan Misshula\\ \texttt{Criminal Justice, CUNY Graduate Center}
+#+Date:  
+#+OPTIONS: toc:nil 
+
+#+LATEX_HEADER: \usepackage{tikz}
+#+LATEX_HEADER: \usepackage{attrib}
+#+LATEX_HEADER: \usepackage{amsmath}
+#+LATEX_HEADER: \let\iint\undefined 
+#+LATEX_HEADER: \let\iiint\undefined 
+#+LATEX_HEADER: \usepackage{dsfont}
+#+LATEX_HEADER: \usepackage[retainorgcmds]{IEEEtrantools}
+#+LATEX_HEADER: \author{Mader, Nick\\ \texttt{Chapin Hall, University of Chicago} \and Misshula, Evan\\ \texttt{Criminal Justice, CUNY Graduate Center}}
+#+LATEX_HEADER: \title{Demonstration Of Instrumental Variables And Control Function Methods}
+
+
+
+#+BEGIN_abstract
+Selection bias affects many of the most promising solutions to social
+problems. There are ways to correct for these risks to validity. This
+paper discusses Instrumental Variables and Control
+Functions. Specifically, This code is a simple demonstration of the
+use and implementation of Instrumental Variables (IV) and Control
+Function estimation procedures.
+#+END_abstract
+
+
+* Initialization						   :noexport:
+We need to begin by executing the elisp code that grants permission and 
+configures this session of org-mode.
+
+#+begin_src emacs-lisp
+;; Require ESS to allow evaluation of R code blocks
+(let ((ess-path "/usr/src/ess-12.04-4/lisp"))       ; <- adjust for your system
+  (add-to-list 'load-path ess-path)
+  (setq ess-ask-for-ess-directory nil)
+  (require 'ess-site)
+  (require 'cl)
+  (require 'org-latex))
+
+;;gets rid of the default table of contents
+(defun org-export-latex-no-toc (depth)  
+    (when depth
+      (format "%% Org-mode is exporting headings to %s levels.\n"
+              depth)))
+  (setq org-export-latex-format-toc-function 'org-export-latex-no-toc)
+
+
+;; Configure Babel to support all languages included in the manuscript
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((dot        . t)
+   (emacs-lisp . t)
+   (haskell    . t)
+   (org        . t)
+   (perl       . t)
+   (python     . t)
+   (R          . t)
+   (ruby       . t)
+   (sh         . t)
+   (sqlite     . t)))
+(setq org-confirrm-babel-evaluate nil)
+
+;; Set default header arguments for the Org-mode blocks used to
+;; showcase example Org-mode syntax.
+(setq org-babel-default-header-args:org '((:results . "raw silent")
+                                          (:exports . "code")))
+
+;; Replace nasty single-quotes returned by R.
+(add-hook 'org-export-latex-final-hook
+          (lambda ()
+            (replace-regexp "’" "'")
+            (goto-char (point-min))
+            (replace-regexp "  \\\\texttt{SCHEDULED:} <2010-08-18 Wed>\n\n"
+                            "   SCHEDULED: <2010-08-18 Wed>\n")
+            (goto-char (point-min))
+            (replace-regexp (regexp-quote ",*") "*")
+            (replace-regexp (regexp-quote ",#") "#")))
+
+;; don't use the full set of Org-mode latex packages
+(setq org-export-latex-default-packages-alist nil)
+
+;; latex-previews
+(add-to-list 'load-path "/Documents/org/elisp/org-mode/lisp")
+(require 'ox)
+
+
+#+end_src
+
+#+RESULTS:
+=ox
+==ox
+==ox
+==ox
+==ox
+==ox
+* Quotes							     :export:
+
+#+BEGIN_LaTeX
+\begin{quote}
+\emph{To parents who despair because their children are unable to master
+ the first problems in arithmetic I can dedicate my examples. For, in
+ arithmetic, until the seventh grade I was last or nearly last.}
+~Jacques Salomon Hadamard (1865-1963)  
+\end{quote}
+
+\begin{quote}
+\emph{To many, mathematics is a collection of theorems. For me, mathematics
+is a collection of examples; a theorem is a statement about a
+collection of examples and the purpose of proving theorems is to
+classify and explain the examples.}  ~John B. Conway
+#+END_LaTeX
+\end{quote}
+
+* Introduction							     :export:
+
+To illustrate the benefits of IV and control functions, a well chosen
+example is worth far more than a theoretical proof.  So with apologies
+to David Hilbert, we will choose a model designed to evoke a common
+problem.
+
+* Model								     :export:
+
+ Let us start with a nested theoretical model:
+#+BEGIN_LaTeX
+  \begin{equation*}
+  \begin{array}{rcl}
+  y & = & [1, x_1, x_2] 
+  \begin{bmatrix}
+  \beta_0  \\
+  \beta_1  \\
+  \beta_2  \end{bmatrix}
+    + \epsilon_w \\
+  x_1 & = & \mathds{1}_{[-1 + \beta_4 \cdot x_4 + \beta_5 \cdot x_5 + \epsilon_j]}
+  \end{array}
+  \end{equation*}  
+#+END_LaTeX
+
+Here the tuple in the first of these equations $[1, x_1, x_2]$ is our
+constant variable, two value categorical variable and continuous
+variable.  These variables comprise our input data which have some
+unknown linear relationship to an output variable $y$.  The error is
+denoted by $e_w$ where $w$ is the index of our principal data records
+of interest.  The second equation, is an indicator function which
+predicts the value of the first of our inputs.  Here $\epsilon_j$
+represents our error in predicting the value of the categorical
+variable in the first equation. For computational purposes we can
+instantiate our model, using names for our hypothetical variables for
+familiarity rather than generalizability, is:
+
+#+BEGIN_LaTeX
+  \begin{verbatim}
+         wage = 5 + 1.0*JobTraining + 0.3*Act_Rel + e_w
+  JobTraining = 1[-1 + 0.2*Act_Rel - 0.4*Dist_Mi + e_j > 0]
+  \end{verbatim}   
+#+END_LaTeX
+In this case we are evaluating a jobs program where we believe that is
+having an effect but doubters point out that our results have
+selection bias since motivated job seekers are more likely to take the
+course in the first place.  In many cases it is critically important
+for promising programs to use data to prove their positive effects are
+not wholly attributable to selection bias. In some cases randomized
+control trials (RCTs) may randomize the bias over both the control and
+treatment groups which will allow for unbiased estimation under
+ordinary least squares (OLS).  However, in this case taking the course
+is a function of distance to the job training center so =e_w= and
+=e_j= are correlated since we can't control for motivation, and since
+motivation will determine both wages and the value of
+JobTraining. Only by randomizing the number of ``motivated'' job
+seekers in the training program can we estimate the actual effect of
+the training course.  Note that, for interpretive simplicity,
+"Act_Dev", is interpreted as the relative difference between one's Act
+score and the average Act.
+
+Notes on control function approach:
+#+BEGIN_LaTeX
+  
+   \begin{IEEEeqnarray*}{rcl}
+  E[w|X, Z, D]  & = & E[XB + aD + e_w | X, Z, D] \\
+                & = & XB + aD + E[e_w | X, Z, D]  \\
+                & = & XB + aD + D*(E[e_w | X, Z, D = 1])\\ 
+                && +\: (1-D)*(E[e_w | X, Z, D=0]) \\
+                & = & XB + aD + D*(E[e_w | e_j > -ZG]) \\
+                && +\: (1-D)*(E[e_w | e_j < -ZG])
+   \end{IEEEeqnarray*}
+  
+#+END_LaTeX
+
+See http://en.wikipedia.org/wiki/Inverse_Mills_ratio for constructions of thesee expectations terms.
+
+* Old Document							   :noexport:
+
+#+Caption: The graph I wanted to make 
+#+LABEL: fig:error
+#+ATTR_LaTeX: width=0.7\linewidth placement=[t!]
+[[./graph_140.png]]
+
+Many of our students and colleagues face the same problem.  They want a solution to their immediate problem often around presenting or analyzing data but are so 
+proficient with the Windows or Mac operating systems that are decidedly adverse to a full switch to Linux.  Yet whatever the reason we are collaborating with them,
+we often need them to use and learn some subset of the tools we do.  This is where Emacs/ESS/docview become indespensible.  It is now possible to use a free tutorial
+with a free data analysis tool to learn R without taking your eyes off what you are typing.  For my example, I have used Charles DiMaggio's excellent tutorial on R.  
+See the screen shot in Figure \ref{fig:R} (p. \pageref{fig:R}).  
+
+
+#+Caption: An R session side-by-side with Charles DiMaggio's P9489 Practicals and Excercises
+#+LABEL: fig:R
+#+ATTR_LaTeX: width=0.7\linewidth placement=[t!]
+[[./docViewLinux.png]]
+
+Otherwise a student is forced to use either a printed book or notes or flip back between a pdf reader or browser and the R environment.   Of course we are not just 
+limited to learning R in this way.  Many other difficult open source languages can be aquired in this way.  Here I have divided the left frame to have both the shell 
+and a file for execution while working through Zed Shaw's Python the hard way.  See the screen shot in Figure \ref{fig:python} (p. \pageref{fig:python}).
+
+#+Caption: Python files and command shell side-by-side with Zed Shaw's Python the hard way
+#+LABEL: fig:python
+#+ATTR_LaTeX: width=0.7\linewidth placement=[t!]
+[[./python.png]]
+
+Docview has been included in Emacs since version 23.  The major-mode was written by Tasilo Horn.  Emacs is perhaps the signature project of the FREE software foundation
+headed by Richard Stallman.  The relatively recent inclusion may account for the difficulties in support for implementation in the hostile Windows environment.  I 
+hope this note will explain what users need to do until such support becomes institutionalized.  A copy will be sent to the Emacs core team in the hopes of 
+making this contribution moot.
+
+** Linux configuration
+
+Specifically, the Emacs manual says that the requirements for docview are Emacs, \LaTeX, ghostscript and Auctex.  Since I work on Ubuntu 12.04 and this system is 
+based on Debian Linux.  The package manager takes care of most of configuration.  The libraries for image files are included as a dependency for one of the three
+requirements.  The only change that I needed to make to it work was to change the ghostscript preview options because of an incompatibility with gs9.05 documented 
+[[http://tex.stackexchange.com/questions/39453/problem-getting-preview-to-work-in-auctex-on-windows-7][gs9.05]]. This option is changed by the following steps.
+
+1. Load a \LaTeX file
+2. Select the preview menu
+3. Select customize item
+4. Select Browse options
+5. Select Preview GS Group
+6. Select Preview GS options
+7. Change -dSAFER to -dNOSAFER
+
+I hope the following screenshots will be helpful.  First examine the preview menu in Figure \ref{fig:previewMenu} (p. \pageref{fig:previewMenu}). Once \emph{customize}  
+is selected the customization of the preview group appears.  The screenshot is presented in  Figure \ref{fig:previewGroup} (p. \pageref{fig:previewGroup}). Finally, the 
+selection is altered on the ``gs preview options'' shown in Figure \ref{fig:safer} (p. \pageref{fig:safer}). 
+
+#+Caption: Preview menu selection necessary to configure emacs to use ghostscript 9.05 or higher
+#+LABEL: fig:previewMenu
+#+ATTR_LaTeX: width=0.7\linewidth placement=[t!]
+[[./previewMenu.png]]
+
+#+Caption: Preview Group menu
+#+LABEL: fig:previewGroup
+#+ATTR_LaTeX: width=0.7\linewidth placement=[t!]
+[[./previewGroup.png]]
+
+#+Caption: Ghostscript options
+#+LABEL: fig:safer
+#+ATTR_LaTeX: width=0.7\linewidth placement=[t!]
+[[./safer.png]]
+* R for windows with docview					   :noexport:
+** Image files
+However, most students will not be on Linux.  For these students to use docview to learn R, we will have to provide instructions that work in Windows environment. Since
+emacs on Windows can use the package manager to download libraries for handling images.  This was outlined in the following [[https://groups.google.com/forum/?fromgroups%3D#!topic/gnu.emacs.help/8M5pWsjlH2Y][discussion]].
+The list from this discussion is enumerated below:
+     1. glut32.dll
+     2. jpeg62.dll
+     3. libimage.dll
+     4. libpng12.dll
+     5. libpng13.dll
+     6. libpng3.dll
+     7. librle3.dll
+     8. libtiff3.dll
+     9. zlib1.dll
+     
+These are normally available on [[http://sourceforge.net/projects/gnuwin32/][GnuWin32]] on sourceforge, but unfortunately that link was broken and downloaded the stream editor sed.  Moreover since  
+new versions of emacs requires libpng14-14.dll or libpng14.dll which are not yet available on gnuwin32, this proves inadequate. I found the better 
+source to be the [[https://bitbucket.org/fangzhzh/temp/src/tip/ntemacs23.1/bin][fangzhzh]] repository on bitbucket.  I downloaded the files.  There is another Windows trap.  Since they are shared objects (a type of
+library) they do not show up unless you confirm that you want to keep them.  See Figure \ref{fig:keepFile} (p. \pageref{fig:keepFile}). 
+
+#+Caption: Remember to confirm that you want to keep the image library files
+#+LABEL: fig:keepFile
+#+ATTR_LaTeX: width=0.7\linewidth placement=[t!]
+[[./keepFile.jpg]]
+
+** Creating an image processing directory
+
+Once you have kept them, these files need to be copied to an appropriate directory for executables on Windows.  The appropriate place to put them is in 
+"C:\\Program Files\\".  The student needs to create a directory.  They will be prompted for an administrator password.  Unless they have set up a seperate
+administrator account they can just left-click on 'Continue.'  I called that directory 'C:\\Program Files\\GnuWin32'.  A screenshot of it is Figure 
+\ref{fig:GnuWin32} (p. \pageref{fig:GnuWin32}).
+
+#+Caption: Create a directory for the image processing files
+#+LABEL: fig:GnuWin32
+#+ATTR_LaTeX: width=0.7\linewidth placement=[t!]
+[[./GnuWin32.jpg]]
+
+** Add Ghostscript and the image directory to the PATH-variable
+
+The operating system still does not know where to find Ghostscipt or these image processing files.  In order for to know where these files are they have to be 
+added to an enviormental variable called the ``PATH''. In to find the value of the path, the best course to open a cmd window in windows by typing cmd in the 
+run box at the start key and pressing the return key.  This is often abbreviated cmd RETURN.  Or the cmd prompt can be reached through Programs -> Accessories 
+folder.  Here is a good reference on [[http://superuser.com/questions/284342/what-are-path-and-other-environment-variables-and-how-can-i-set-or-use-them][path variables]].  This should be set with the ``setx'' not the set command and there is no ``=-sign'' used.  The computer 
+must be restarted for the new values to recognized.  A picture of the command I used and my Windows PATH is shown in Figure \ref{fig:path} (p. \pageref{fig:path}). 
+
+#+Caption: Create a directory for the image processing files
+#+LABEL: fig:path
+#+ATTR_LaTeX: width=0.7\linewidth placement=[t!]
+[[./path.jpg]]
+
+** Configure Emacs to use the correct Ghostscript
+
+The last thing that is needed is for Emacs to understand what the correct name of the Ghostscript executable in Windows is.  To do this in Emacs Alt-x customize-group
+RET doc-view RET.  Now set the value of Ghostscript to gswin32c.exe as seen in Figure \ref{fig:emacsConfig} (p. \pageref{fig:emacsConfig}). 
+
+#+Caption: Configure Emacs for doc-view in Windows
+#+LABEL: fig:emacsConfig
+#+ATTR_LaTeX: width=0.7\linewidth placement=[t!]
+[[./emacsConfig.jpg]]
+
+* Students can now read tutorials next to program execution window :noexport:
+
+The students can now study and execute code side by side in Windows as shown in Figure \ref{fig:emacsDoc} (p. \pageref{fig:emacsDoc}). 
+
+#+Caption: Docview in Windows
+#+LABEL: fig:emacsDoc
+#+ATTR_LaTeX: width=0.7\linewidth placement=[t!]
+[[./emacsDoc.jpg]]
+
+* Conclusion							   :noexport:
+
+Students should first read the emacs tutorial which is available by hitting RET after starting Emacs.  Also, students interested in learning LaTeX are encouraged 
+to study Tobey Oetiker's excellent [[tobi.oetiker.ch/lshort/lshort.pdf][The (Not So) Short Introduction to LaTeX2e]].
+
+\end{document}
+s
