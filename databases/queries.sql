@@ -1,5 +1,10 @@
+-- Chuckles... --
+-- http://xkcd.com/327/ --
+
+-- Drop Table
 DROP TABLE project
 
+-- Create Table
 CREATE TABLE project (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     title TEXT(2000000000),
@@ -76,9 +81,9 @@ UNION SELECT "Skyler","Whorton",1
 UNION SELECT "Min","Xu",1
 
 
+--
 -- Example queries
-
-SELECT * FROM fellow JOIN project ON project.id = fellow.id_project
+--
 
 -- CRUD for a fellow... into the database
 -- Create
@@ -92,3 +97,63 @@ DELETE FROM fellow WHERE first_name = "Nate"
 
 -- Constraints: Cant do this! Invalid id_project (but it's working ... must have setup wrong way :P)
 INSERT INTO fellow (first_name, last_name, id_project) VALUES ("Notorious", "B.I.G.", 200)
+
+--     WHERE IN        
+SELECT * FROM fellow WHERE first_name IN ("Min", "Nihar")
+
+--     WHERE LIKE
+-- Name contains and "A" as first character
+SELECT * FROM fellow WHERE first_name LIKE "a%"
+
+-- Name contains and "A" as first character OR "a" as any character
+SELECT * FROM fellow WHERE first_name LIKE "a%" OR last_name LIKE "a%"
+
+--     JOIN ( / LEFT / RIGHT / NATURAL / INNER / OUTER) ON
+SELECT * FROM fellow JOIN project ON project.id = fellow.id_project
+
+SELECT * FROM fellow JOIN project ON project.id = fellow.id_project
+
+--     UNION
+SELECT * FROM fellow WHERE first_name LIKE "a%"
+UNION
+SELECT * FROM fellow WHERE first_name LIKE "b%"
+
+--     INTERSECTION
+SELECT * FROM fellow WHERE first_name LIKE "a%"
+INTERSECT
+SELECT * FROM fellow WHERE first_name LIKE "%d%"
+
+--     subqueries
+SELECT * FROM 
+(SELECT * FROM fellow LIMIT 2)
+WHERE first_name LIKE "A%"
+
+--     transactions
+-- START TRANSACTION;
+-- UPDATE  SET balance =   balance -   1000    WHERE   number  =   2;
+-- UPDATE  SET balance =   balance +   1000    WHERE   number  =   1;
+-- COMMIT;
+
+
+-- ----------------------------------------
+
+--
+-- Look at a schema -- what does it mean?
+--
+
+-- http://chinookdatabase.codeplex.com/wikipage?title=Chinook_Schema&referringTitle=Home
+-- image
+-- http://lh4.ggpht.com/_oKo6zFhdD98/SWFPtyfHJFI/AAAAAAAAAMc/GdrlzeBNsZM/s800/ChinookDatabaseSchema1.1.png
+
+-- Here's one from a github issue in our own repo:
+-- https://github.com/dssg/dssg-ushahidi/issues/75
+
+--
+-- handy dbeaver things
+--
+
+-- - SQL editor
+-- - format SQL (while in query box)
+-- - generate SQL (from table)
+-- - connect to many/any other kinds of dbs
+
