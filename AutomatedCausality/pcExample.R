@@ -1,0 +1,7 @@
+require("pcalg")
+data("gmG")
+suffStat <- list(C=cor(gmG$x), n = nrow(gmG$x))
+pc.fit <- pc(suffStat, indepTest = gaussCItest, p = ncol(gmG$x), alpha = 0.01)
+par(mfrow = c(1,2))
+plot(gmG$g, main = "True Graph")
+plot(pc.fit, main = "PC estimation")

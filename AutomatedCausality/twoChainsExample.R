@@ -1,0 +1,6 @@
+dataset <- read.table("twoChains.txt", header=TRUE, sep="\t")
+suffStat <- list(C=cor(dataset),n = nrow(dataset))
+pc.fit <- pc(suffStat, indepTest= gaussCItest, p = ncol(dataset), alpha = 0.01)
+pag.est <- fci(suffStat, indepTest=gaussCItest, p = ncol(dataset), alpha = 0.01)
+par(mfrow = c(1,2))
+plot(pc.fit, labels=colnames(dataset), main = "PC estimation for twoChains")

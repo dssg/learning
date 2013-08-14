@@ -1,0 +1,7 @@
+require("pcalg")
+data("gmL")
+suffStat1 <- list(C= cor(gmL$x), n = nrow(gmL$x))
+pag.est <- fci(suffStat1, indepTest = gaussCItest, p = ncol(gmL$x), alpha = 0.01)
+par(mfrow = c(1,2))
+plot(gmL$g, main = "True structure")
+plot(pag.est)
